@@ -296,64 +296,66 @@ function App() {
 
       {/* Galería Section */}
       <section id="galeria" className="section section-with-bg bg-galeria" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg_galeria.jpg)` }}>
-        <div className="reveal">
-          <div className="flex justify-between items-end mb-4">
-            <div>
-              <span className="section-subtitle">Multimedia</span>
-              <h2 className="section-title" style={{ marginBottom: 0 }}>Galería</h2>
-            </div>
-            <div className="text-gray" style={{ marginBottom: '10px' }}>
-              Nuestra comunidad en acción
+        <div className="container">
+          <div className="reveal">
+            <div className="flex justify-between items-end mb-4">
+              <div>
+                <span className="section-subtitle">Multimedia</span>
+                <h2 className="section-title" style={{ marginBottom: 0 }}>Galería</h2>
+              </div>
+              <div className="text-gray" style={{ marginBottom: '10px' }}>
+                Nuestra comunidad en acción
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="gallery-grid reveal">
-          <div className="gallery-item">
-            <img src={`${import.meta.env.BASE_URL}galeria/1.jpg`} alt="Momentos destacables 1" />
-            <div className="gallery-overlay">
-              <Camera size={40} className="gallery-icon" />
+          <div className="gallery-grid reveal">
+            <div className="gallery-item">
+              <img src={`${import.meta.env.BASE_URL}galeria/1.jpg`} alt="Momentos destacables 1" />
+              <div className="gallery-overlay">
+                <Camera size={40} className="gallery-icon" />
+              </div>
             </div>
-          </div>
-          <div className="gallery-item">
-            <img src={`${import.meta.env.BASE_URL}galeria/2.jpg`} alt="Momentos destacables 2" />
-             <div className="gallery-overlay">
-              <Camera size={40} className="gallery-icon" />
+            <div className="gallery-item">
+              <img src={`${import.meta.env.BASE_URL}galeria/2.jpg`} alt="Momentos destacables 2" />
+               <div className="gallery-overlay">
+                <Camera size={40} className="gallery-icon" />
+              </div>
             </div>
-          </div>
-          <div className="gallery-item">
-            <img src={`${import.meta.env.BASE_URL}galeria/3.jpg`} alt="Momentos destacables 3" />
-             <div className="gallery-overlay">
-              <Camera size={40} className="gallery-icon" />
+            <div className="gallery-item">
+              <img src={`${import.meta.env.BASE_URL}galeria/3.jpg`} alt="Momentos destacables 3" />
+               <div className="gallery-overlay">
+                <Camera size={40} className="gallery-icon" />
+              </div>
             </div>
-          </div>
-          <div className="gallery-item">
-            <img src={`${import.meta.env.BASE_URL}galeria/4.jpg`} alt="Momentos destacables 4" />
-             <div className="gallery-overlay">
-              <Camera size={40} className="gallery-icon" />
+            <div className="gallery-item">
+              <img src={`${import.meta.env.BASE_URL}galeria/4.jpg`} alt="Momentos destacables 4" />
+               <div className="gallery-overlay">
+                <Camera size={40} className="gallery-icon" />
+              </div>
             </div>
-          </div>
-          
-          <div className="gallery-item" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <iframe 
-              src="https://www.youtube.com/embed/3DWn4zd8NR0?rel=0" 
-              title="YouTube video player 1" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowFullScreen
-              style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
-            </iframe>
-          </div>
-          
-          <div className="gallery-item" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <iframe 
-              src="https://www.youtube.com/embed/hIz0PDNSmJQ?rel=0" 
-              title="YouTube video player 2" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowFullScreen
-              style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
-            </iframe>
+            
+            <div className="gallery-item" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <iframe 
+                src="https://www.youtube.com/embed/3DWn4zd8NR0?rel=0" 
+                title="YouTube video player 1" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowFullScreen
+                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
+              </iframe>
+            </div>
+            
+            <div className="gallery-item" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <iframe 
+                src="https://www.youtube.com/embed/hIz0PDNSmJQ?rel=0" 
+                title="YouTube video player 2" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowFullScreen
+                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
+              </iframe>
+            </div>
           </div>
         </div>
       </section>
