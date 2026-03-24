@@ -110,7 +110,7 @@ function App() {
       </section>
 
       {/* Logros Section */}
-      <section id="logros" className="section section-with-bg bg-logros">
+      <section id="logros" className="section section-with-bg bg-logros" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg_logros.png)` }}>
         <div className="container">
           <div className="reveal text-center">
             <span className="section-subtitle">02. Trayectoria</span>
@@ -204,7 +204,7 @@ function App() {
       </section>
 
       {/* Calendario Section */}
-      <section id="calendario" className="section section-with-bg bg-calendario">
+      <section id="calendario" className="section section-with-bg bg-calendario" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg_calendario.jpg)` }}>
         <div className="container">
           <div className="reveal text-center mb-5" style={{ marginBottom: '3rem' }}>
             <span className="section-subtitle">Eventos</span>
@@ -264,7 +264,7 @@ function App() {
       </section>
 
       {/* Voluntariado Section */}
-      <section id="voluntariado" className="section section-with-bg bg-voluntariado">
+      <section id="voluntariado" className="section section-with-bg bg-voluntariado" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg_voluntariado.png)` }}>
         <div className="container">
           <div className="reveal text-center mb-5">
             <span className="section-subtitle">04. Causas</span>
@@ -295,7 +295,7 @@ function App() {
       </section>
 
       {/* Galería Section */}
-      <section id="galeria" className="section section-with-bg bg-galeria">
+      <section id="galeria" className="section section-with-bg bg-galeria" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg_galeria.jpg)` }}>
         <div className="reveal">
           <div className="flex justify-between items-end mb-4">
             <div>
@@ -359,7 +359,7 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contacto" className="section section-with-bg bg-contacto">
+      <section id="contacto" className="section section-with-bg bg-contacto" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg_contacto.png)` }}>
         <div className="container">
           <div className="reveal">
             <span className="section-subtitle">05. Unirse</span>
