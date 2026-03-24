@@ -58,7 +58,7 @@ function App() {
 
       {/* Hero Section */}
       <section id="inicio" className="hero-section">
-        <img src="/hero_bg.png" alt="Paralympic racing hero background" className="hero-bg" />
+        <img src={`${import.meta.env.BASE_URL}hero_bg.png`} alt="Paralympic racing hero background" className="hero-bg" />
         <div className="hero-overlay"></div>
         <div className="container">
           <div className="hero-content reveal">
@@ -104,7 +104,7 @@ function App() {
             </p>
           </div>
           <div className="about-image">
-            <img src="/portrait.png" alt="Baltazar Hernandez Suastegui" />
+            <img src={`${import.meta.env.BASE_URL}portrait.png`} alt="Baltazar Hernandez Suastegui" />
           </div>
         </div>
       </section>
@@ -172,7 +172,7 @@ function App() {
 
         <div className="grid grid-cols-2 gap-md items-center mb-5" style={{ marginBottom: '4rem' }}>
            <div className="about-image reveal">
-            <img src="/action_shot.png" alt="Taller de silla de ruedas y comunidad" />
+            <img src={`${import.meta.env.BASE_URL}action_shot.png`} alt="Taller de silla de ruedas y comunidad" />
           </div>
           <div className="features-grid reveal" style={{ gridTemplateColumns: '1fr' }}>
             <div className="feature-card">
@@ -295,7 +295,7 @@ function App() {
       </section>
 
       {/* Galería Section */}
-      <section id="galeria" className="section container">
+      <section id="galeria" className="section section-with-bg bg-galeria">
         <div className="reveal">
           <div className="flex justify-between items-end mb-4">
             <div>
@@ -310,25 +310,25 @@ function App() {
 
         <div className="gallery-grid reveal">
           <div className="gallery-item">
-            <img src="/galeria/1.jpg" alt="Momentos destacables 1" />
+            <img src={`${import.meta.env.BASE_URL}galeria/1.jpg`} alt="Momentos destacables 1" />
             <div className="gallery-overlay">
               <Camera size={40} className="gallery-icon" />
             </div>
           </div>
           <div className="gallery-item">
-            <img src="/galeria/2.jpg" alt="Momentos destacables 2" />
+            <img src={`${import.meta.env.BASE_URL}galeria/2.jpg`} alt="Momentos destacables 2" />
              <div className="gallery-overlay">
               <Camera size={40} className="gallery-icon" />
             </div>
           </div>
           <div className="gallery-item">
-            <img src="/galeria/3.jpg" alt="Momentos destacables 3" />
+            <img src={`${import.meta.env.BASE_URL}galeria/3.jpg`} alt="Momentos destacables 3" />
              <div className="gallery-overlay">
               <Camera size={40} className="gallery-icon" />
             </div>
           </div>
           <div className="gallery-item">
-            <img src="/galeria/4.jpg" alt="Momentos destacables 4" />
+            <img src={`${import.meta.env.BASE_URL}galeria/4.jpg`} alt="Momentos destacables 4" />
              <div className="gallery-overlay">
               <Camera size={40} className="gallery-icon" />
             </div>

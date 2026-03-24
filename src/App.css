@@ -397,6 +397,10 @@ footer {
   background-image: url('/bg_calendario.jpg');
 }
 
+.bg-galeria {
+  background-image: url('/bg_galeria.jpg');
+}
+
 .bg-contacto {
   background-image: url('/bg_contacto.png');
 }
