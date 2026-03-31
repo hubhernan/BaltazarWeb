@@ -47,6 +47,7 @@ function App() {
             <a href="#calendario" className="nav-link" onClick={toggleMenu}>Calendario</a>
             <a href="#voluntariado" className="nav-link" onClick={toggleMenu}>Voluntariado</a>
             <a href="#galeria" className="nav-link" onClick={toggleMenu}>Galería</a>
+            <a href="#lideres" className="nav-link" onClick={toggleMenu}>Líderes VIM 2026</a>
             <a href="#contacto" className="nav-link" onClick={toggleMenu}>Contacto</a>
           </nav>
 
@@ -357,6 +358,26 @@ function App() {
               </iframe>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Lideres VIM 2026 Section */}
+      <section id="lideres" className="section container">
+        <div className="reveal">
+          <div className="flex justify-between items-end mb-4">
+            <div>
+              <span className="section-subtitle">Red Nacional</span>
+              <h2 className="section-title" style={{ marginBottom: 0 }}>Líderes VIM 2026</h2>
+            </div>
+          </div>
+        </div>
+        <div className="reveal" style={{ width: '100%', height: '80vh', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', border: '1px solid rgba(0,0,0,0.05)' }}>
+          <iframe 
+            src={`${import.meta.env.BASE_URL}lideres.html`} 
+            style={{ width: '100%', height: '100%', border: 'none' }}
+            title="Directorio VIM 2026"
+            loading="lazy"
+          ></iframe>
         </div>
       </section>
 
