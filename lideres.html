@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio VIM 2026 - Vista Nacional Optimizada</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body, html { height: 100%; margin: 0; overflow: hidden; font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        #main-app { display: flex; height: 100vh; width: 100vw; flex-direction: row; }
+        #map-container { flex-grow: 1; height: 100%; position: relative; background: #cbd5e1; }
+        #map { width: 100%; height: 100%; z-index: 1; }
+        #sidebar { width: 450px; height: 100%; background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 1000; display: flex; flex-direction: column; border-left: 1px solid #e2e8f0; }
+        
+        @media (max-width: 1024px) {
+            #main-app { flex-direction: column; }
+            #sidebar { width: 100%; height: 50%; border-left: none; }
+            #map-container { height: 50%; }
+        }
+
+        /* Burbuja Proporcional */
+        .state-bubble {
+            background: rgba(239, 68, 68, 0.75);
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            color: white;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .state-bubble:hover { transform: scale(1.1); background: rgba(220, 38, 38, 0.95); z-index: 1000 !important; }
+
+        .leader-card { border-left: 6px solid #ef4444; transition: all 0.2s; cursor: pointer; }
+        .leader-card:hover { transform: translateX(8px); background-color: #fef2f2; }
+        .leader-card.active-card { border-left-color: #1e293b; background-color: #f8fafc; outline: 2px solid #ef4444; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .link-icon { color: #2563eb; font-weight: 700; text-decoration: underline; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
+        .link-icon:hover { color: #1d4ed8; }
+        
+        /* Marcador resaltado fijo (sin animación) */
+        .highlighted-pin { stroke: #1e293b; stroke-width: 4px; }
+    </style>
+</head>
+<body>
+
+    <div id="main-app">
+        <div id="map-container">
+            <!-- Barra de información superior -->
+            <div class="absolute top-4 left-4 right-4 z-[1001] pointer-events-none">
+                <div class="bg-white/95 backdrop-blur-sm p-4 rounded-2xl shadow-xl border border-white pointer-events-auto flex justify-between items-center max-w-lg">
+                    <div>
+                        <h2 class="text-sm font-black text-slate-800 tracking-tight leading-none uppercase">Presencia Estratégica VIM</h2>
+                        <p class="text-[10px] text-slate-500 font-bold mt-1 uppercase tracking-widest">Enfoque Nacional • Ciclo 2026</p>
+                    </div>
+                    <button onclick="resetMapView()" class="text-[9px] bg-slate-900 text-white px-4 py-2 rounded-full font-bold hover:bg-black transition-colors uppercase tracking-widest">Reiniciar Vista</button>
+                </div>
+            </div>
+
+            <div id="map"></div>
+            
+            <!-- Leyenda de Zoom -->
+            <div class="absolute bottom-6 left-6 z-[1001] bg-slate-900/85 backdrop-blur p-4 rounded-2xl text-white pointer-events-none shadow-2xl max-w-[220px]">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                    <p class="text-[10px] font-bold uppercase tracking-wider">Burbujas Proporcionales</p>
+                </div>
+                <p class="text-[10px] text-slate-300 leading-tight">Tamaño según el número de sedes por estado. Acércate para ver detalles locales.</p>
+            </div>
+        </div>
+
+        <!-- Panel de Información -->
+        <div id="sidebar">
+            <div class="p-6 bg-white border-b space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-200">
+                        <svg viewBox="0 0 100 100" class="w-7 h-7 text-white fill-current"><path d="M50 10 L90 90 L50 75 L10 90 Z" /></svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-black text-slate-900 tracking-tighter leading-none uppercase">Directorio VIM</h1>
+                        <p class="text-red-600 text-[10px] font-black uppercase tracking-widest mt-1">Líderes de México</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <input type="text" id="searchInput" onkeyup="filterList()" placeholder="Buscar sede, líder o estado..." 
+                        class="w-full pl-10 pr-4 py-3 bg-slate-100 border-none rounded-2xl text-sm focus:ring-2 focus:ring-red-500 transition-all outline-none">
+                    <svg class="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
+            </div>
+
+            <div id="cards-container" class="flex-grow overflow-y-auto p-6 bg-slate-50/50 custom-scrollbar">
+                <div id="results-area" class="space-y-6">
+                    <!-- Dinámico -->
+                </div>
+            </div>
+
+            <div class="p-4 border-t bg-white">
+                <button onclick="showVirtual()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 hover:bg-black transition-colors">
+                    🌐 Sede Virtual Nacional
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // BASE DE DATOS COMPLETA ACTUALIZADA (36 Registros incluyendo Baltazar Hernández)
+        const leadersData = [
+            { id: 1, estado: "Colima", sede: "Villa de Álvarez", lider: "Carlos Alfaro Montes", tel: "312 369 9894", correo: "yesuafernando95@gmail.com", redes: ["https://www.facebook.com/share/17VQuwxNiW/"], ent: "Sábados 8:30 am - Av. J. Merced Cabrera 220", coords: [19.2662, -103.7337] },
+            { id: 2, estado: "Oaxaca", sede: "Oaxaca Centro", lider: "Ramiro Amador Reyes", tel: "951 358 3669", correo: "ramiroamador2701@gmail.com", redes: ["https://www.facebook.com/share/1BZRUhZe1A/"], ent: "Sábados 8:00 a 11:00 am - Parque El Llano", coords: [17.0732, -96.7266] },
+            { id: 3, estado: "Oaxaca", sede: "Huatulco", lider: "Victoria Tziu Jiménez", tel: "958 147 1046", correo: "napotziu@gmail.com", redes: ["https://www.facebook.com/share/1BGtp8UQ7L/"], ent: "Sábados 9:00 am - Parque Rufino Tamayo", coords: [15.7753, -96.1345] },
+            { id: 4, estado: "San Luis Potosí", sede: "Capital", lider: "Silvia Emilia Degante Romero", tel: "444 844 8144", correo: "shivydegante@outlook.com", redes: ["https://www.vidaindependienteslp.com/"], ent: "Información por confirmar", coords: [22.1565, -100.9855] },
+            { id: 5, estado: "Tlaxcala", sede: "Capital", lider: "Raúl García Rosas", tel: "246 157 8165", correo: "vim.tlaxcala@gmail.com", redes: ["https://www.facebook.com/share/175v8cc4oW/"], ent: "Cada 15 días en Parques del Bienestar", coords: [19.3181, -98.2375] },
+            { id: 6, estado: "Nayarit", sede: "Ahuacatlán", lider: "José Domingo Ochoa", tel: "324 103 0562", correo: "vim.ahuacatlannayarit@gmail.com", redes: ["https://www.facebook.com/share/1EHua1ZPrF/"], ent: "Martes y Jueves 9 am - 2 pm", coords: [21.0536, -104.4842] },
+            { id: 7, estado: "Nayarit", sede: "Tepic", lider: "Delia Cervera López", tel: "311 227 4627", correo: "vidaindependientetepic@gmail.com", redes: ["https://www.facebook.com/share/1KFtGw5mmi/"], ent: "Domingos 11:00 am - Alameda", coords: [21.5039, -104.8946] },
+            { id: 8, estado: "Querétaro", sede: "Pedro Escobedo", lider: "Alberto Chávez Galván", tel: "442 118 1848", correo: "albertochavezgalvan83@gmail.com", redes: ["https://www.facebook.com/VidaIndependienteQueretaro"], ent: "Cada 15 días Domingo 9 am", coords: [20.5019, -100.1292] },
+            { id: 9, estado: "Morelos", sede: "Emiliano Zapata", lider: "Zaira Montero", tel: "777 462 4470", correo: "villa.zaira08m@gmail.com", redes: ["https://www.facebook.com/share/16KPLXYhMc/"], ent: "Miércoles 4 pm", coords: [18.8354, -99.1837] },
+            { id: 10, estado: "Morelos", sede: "Cuautla", lider: "Anayansi Quintanilla", tel: "735 212 7385", correo: "vimcuautla@gmail.com", redes: ["https://www.facebook.com/share/1JW3ZWeTRj/"], ent: "Viernes 4:30 pm", coords: [18.8131, -98.9453] },
+            { id: 11, estado: "Morelos", sede: "Jiutepec", lider: "Roberto Bernal López", tel: "777 187 3331", correo: "nuevorodar@gmail.com", redes: [], ent: "Jueves y Sábados 4-6 pm", coords: [18.8895, -99.1740] },
+            { id: 12, estado: "Estado de México", sede: "Ixtapaluca", lider: "José Juan Clara Mora", tel: "55 3464 2452", correo: "josejuanclara26@gmail.com", redes: ["https://www.facebook.com/share/1CBEgeBvem/"], ent: "Martes 9:00 am", coords: [19.3175, -98.8821] },
+            { id: 13, estado: "Estado de México", sede: "Zumpango", lider: "Miguel Sánchez", tel: "56 3023 7727", correo: "m-10-du@outlook.com", redes: [], ent: "Jueves 2:00 pm", coords: [19.7968, -99.0983] },
+            { id: 14, estado: "Estado de México", sede: "Nezahualcóyotl", lider: "María Antonieta Reyes", tel: "55 6105 7602", correo: "maríaantonieta100566@gmail.com", redes: ["https://www.facebook.com/groups/901975857741115/"], ent: "Miércoles 10 am", coords: [19.4105, -99.0148] },
+            { id: 15, estado: "Estado de México", sede: "Tenancingo", lider: "Miriam Gutiérrez", tel: "722 345 4599", correo: "tenancingovim@gmail.com", redes: ["https://www.facebook.com/share/17VotrLWRH/"], ent: "Sábado 10 am", coords: [18.9602, -99.5912] },
+            { id: 16, estado: "Estado de México", sede: "Tultitlán", lider: "Blanca Estela Ruiz", tel: "55 1332 1364", correo: "tultitlanvidaindependiente@gmail.com", redes: ["https://www.facebook.com/share/1E7wTqvc/"], ent: "Jueves 2:00 pm", coords: [19.6454, -99.1687] },
+            { id: 17, estado: "Estado de México", sede: "Naucalpan", lider: "Jibert González García", tel: "55 4027 6812", correo: "gibertgonzalezgarcia@gmail.com", redes: ["https://www.facebook.com/share/1AsiYbu8WL/"], ent: "Jueves 9:00 am", coords: [19.4785, -99.2396] },
+            { id: 18, estado: "Estado de México", sede: "Coacalco", lider: "Rosa María Medina", tel: "56 7408 2510", correo: "rj3omross@gmail.com", redes: [], ent: "Sábados 1-3 pm", coords: [19.6293, -99.0911] },
+            { id: 19, estado: "Estado de México", sede: "San Juanico", lider: "María Gabriela Esquivel", tel: "55 2753 2738", correo: "No disponible", redes: ["https://www.facebook.com/share/1FPSgF2Wt2/"], ent: "Miércoles 10 am", coords: [19.5303, -99.1022] },
+            { id: 20, estado: "Estado de México", sede: "Coyotes Neza", lider: "Baltazar Hernández Suástegui", tel: "563 851 2283", correo: "baltadif09@gmail.com", redes: ["https://www.facebook.com/share/r/1CeYPccqmj/"], ent: "Sábado 10:00 am a 13:00 pm - Av. Pantitlán Esq. Hombres Ilustres", coords: [19.4020, -98.9950] },
+            { id: 21, estado: "CDMX", sede: "Coyoacán", lider: "Aken Alix Salazar", tel: "56 2696 3498", correo: "Akenalix.salmor@gmail.com", redes: ["https://www.facebook.com/share/19GZ9zpDFp/"], ent: "Sábados 4:00 pm", coords: [19.3502, -99.1632] },
+            { id: 22, estado: "CDMX", sede: "Cuajimalpa", lider: "Omar Uriel Romero", tel: "55 5021 9955", correo: "omarrch@hotmail.com", redes: ["https://www.facebook.com/share/175ytkvvrU/"], ent: "Jueves 9:30 am", coords: [19.3575, -99.2872] },
+            { id: 23, estado: "Puebla", sede: "Tochtepec", lider: "Hugo Heredia", tel: "249 171 2293", correo: "herediafaustinohugo@gmail.com", redes: ["https://www.facebook.com/share/1Y8wjkFPK7/"], ent: "Sábado 12 pm", coords: [18.8396, -97.8285] },
+            { id: 24, estado: "Puebla", sede: "Atlixco", lider: "Erick Yahir Durán", tel: "244 593 7071", correo: "eryadude@gmail.com", redes: [], ent: "Domingo 6 pm", coords: [18.9038, -98.4385] },
+            { id: 25, estado: "Puebla", sede: "Izúcar", lider: "Alejandro Lumbreras", tel: "243 101 8379", correo: "alex.lumbreras1223@gmail.com", redes: ["https://www.facebook.com/share/16RzwEm8CP/"], ent: "Sábado 9 am", coords: [18.6014, -98.4619] },
+            { id: 26, estado: "Puebla", sede: "Chalchicomula", lider: "Eduardo Sosa Montero", tel: "245 103 7307", correo: "eduardososamontero@gmail.com", redes: ["https://www.facebook.com/share/17PidtZxwj/"], ent: "Domingo 8 am", coords: [18.9850, -97.4435] },
+            { id: 27, estado: "Puebla", sede: "Tlacotepec", lider: "Martín Moro Ramírez", tel: "237 107 5103", correo: "No disponible", redes: ["https://www.facebook.com/share/17K15RFvGM/"], ent: "Sábados 9 am", coords: [18.6631, -97.6436] },
+            { id: 28, estado: "Jalisco", sede: "Lagos de Moreno", lider: "Mayra García", tel: "474 159 3504", correo: "may68gato@gmail.com", redes: ["https://www.facebook.com/profile.php?id=100078813589079"], ent: "Sábado 8 am", coords: [21.3524, -101.9304] },
+            { id: 29, estado: "Yucatán", sede: "Mérida", lider: "Norma Chi Contreras", tel: "999 264 3296", correo: "fenix4276@hotmail.com", redes: ["https://www.facebook.com/share/1BkWQevMCW/"], ent: "Sábados 4-7 pm", coords: [20.9674, -89.5926] },
+            { id: 30, estado: "Guerrero", sede: "Acapulco", lider: "Roberto Librado", tel: "744 302 2552", correo: "lisrob18@hotmail.com", redes: ["https://www.facebook.com/profile.php?id=100070595712656"], ent: "Martes 5 pm", coords: [16.8531, -99.8237] },
+            { id: 31, estado: "Guerrero", sede: "Tepecoacuilco", lider: "José Luis Barragán", tel: "733 125 3685", correo: "toledolluis29@gmail.com", redes: [], ent: "Sábado 8:30 am", coords: [18.2936, -99.4796] },
+            { id: 32, estado: "Guerrero", sede: "Iguala", lider: "Martín Martínez", tel: "777 157 4891", correo: "vimiguala@gmail.com", redes: ["https://www.facebook.com/share/1cLjAiUoqt/"], ent: "Sábados 10 am", coords: [18.3444, -99.5394] },
+            { id: 33, estado: "Guanajuato", sede: "Celaya", lider: "José Cantero", tel: "461 172 1290", correo: "fh3156286@gmail.com", redes: ["https://www.facebook.com/share/1BYXoiHL8E/"], ent: "Cada 15 días", coords: [20.5221, -100.8123] },
+            { id: 34, estado: "Guanajuato", sede: "Purísima del Rincón", lider: "Luis Rey Guerrero Aguilar", tel: "476 135 6762", correo: "No disponible", redes: [], ent: "Domingos 12 pm", coords: [21.0315, -101.8814] },
+            { id: 35, estado: "Hidalgo", sede: "Huejutla", lider: "Rubicel Hernández García", tel: "771 352 1393", correo: "vidaindependientemexicosedehue@gmail.com", redes: ["https://www.facebook.com/profile.php?id=61554904469685"], ent: "Sábados c/15 días", coords: [21.1402, -98.4190] }
+        ];
+
+        const virtualLeader = { id: 99, estado: "Nacional", sede: "Sede Virtual", lider: "Jorge Ayon Magdaleno", tel: "33 1318 9422", correo: "Jorgealbertomagdaleno76@gmail.com", redes: ["https://zoom.us"], ent: "Jueves vía Zoom", coords: null };
+
+        const stateCenters = {
+            "Colima": [19.2, -103.7], "Oaxaca": [17.0, -96.7], "San Luis Potosí": [22.1, -101.0],
+            "Tlaxcala": [19.3, -98.2], "Nayarit": [21.7, -104.9], "Querétaro": [20.6, -100.4],
+            "Morelos": [18.7, -99.1], "Estado de México": [19.4, -99.3], "CDMX": [19.25, -99.1],
+            "Puebla": [18.8, -98.0], "Jalisco": [20.6, -103.3], "Yucatán": [20.9, -89.6],
+            "Guerrero": [17.6, -99.5], "Guanajuato": [21.0, -101.3], "Hidalgo": [20.1, -98.8]
+        };
+
+        // --- ENFOQUE MÉXICO OPTIMIZADO (PRECISO A ZOOMMEXICO.JPG) ---
+        const MEXICO_BOUNDS = [
+            [13.5, -118.5], // Extremo Suroeste
+            [33.5, -85.5]   // Extremo Noreste
+        ];
+        const MEXICO_CENTER = [23.8, -102.2]; // Centro ajustado para protagonismo nacional
+        const MEXICO_ZOOM = 5.2;
+
+        let map, geojsonLayer, bubblesLayer, pinsLayer;
+        let pendingHighlightId = null;
+
+        function init() {
+            map = L.map('map', { 
+                zoomSnap: 0.1, 
+                attributionControl: false, 
+                minZoom: 5.0, 
+                maxZoom: 14, 
+                maxBounds: MEXICO_BOUNDS, 
+                maxBoundsViscosity: 1.0 
+            });
+            
+            // Establecer vista inicial exacta
+            map.setView(MEXICO_CENTER, MEXICO_ZOOM);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+            bubblesLayer = L.layerGroup().addTo(map);
+            pinsLayer = L.layerGroup().addTo(map);
+
+            fetch('https://raw.githubusercontent.com/angelnmara/geojson-mexico/master/mexico.json')
+                .then(res => res.json())
+                .then(data => {
+                    geojsonLayer = L.geoJson(data, {
+                        style: (f) => ({ fillColor: '#ef4444', weight: 1.2, opacity: 0.5, color: 'white', fillOpacity: 0.015 }),
+                        onEachFeature: (f, layer) => {
+                            layer.on('click', () => {
+                                map.fitBounds(layer.getBounds(), { padding: [40, 40] });
+                                filterListByState(f.properties.name);
+                            });
+                        }
+                    }).addTo(map);
+                    updateView();
+                });
+
+            map.on('zoomend', updateView);
+            renderCards(leadersData); 
+        }
+
+        function updateView() {
+            const zoom = map.getZoom();
+            bubblesLayer.clearLayers();
+            pinsLayer.clearLayers();
+
+            if (zoom < 7.8) {
+                Object.keys(stateCenters).forEach(state => {
+                    const count = leadersData.filter(d => d.estado === state).length;
+                    if (count > 0) {
+                        const size = 35 + (count * 7); 
+                        const bubble = L.marker(stateCenters[state], {
+                            icon: L.divIcon({
+                                className: '',
+                                html: `<div class="state-bubble" style="width:${size}px; height:${size}px; font-size:${11 + count}px;">${count}</div>`,
+                                iconSize: [size, size]
+                            })
+                        });
+                        bubble.on('click', () => {
+                            map.setView(stateCenters[state], 8.5);
+                            filterListByState(state);
+                        });
+                        bubble.addTo(bubblesLayer);
+                    }
+                });
+            } else {
+                leadersData.forEach(item => {
+                    if (item.coords) {
+                        const isHighlighted = pendingHighlightId === item.id;
+                        const pin = L.circleMarker(item.coords, {
+                            radius: isHighlighted ? 12 : 9, 
+                            fillColor: "#ef4444", 
+                            color: isHighlighted ? "#1e293b" : "#fff", 
+                            weight: isHighlighted ? 4 : 3, 
+                            opacity: 1, 
+                            fillOpacity: 1.0,
+                            className: isHighlighted ? 'highlighted-pin' : ''
+                        });
+                        
+                        pin.bindPopup(`<strong>${item.sede}</strong><br>${item.lider}<br><small>${item.tel}</small>`, { closeButton: false });
+                        
+                        pin.on('click', () => {
+                            highlightCard(item.id);
+                            renderCards([item], item.sede);
+                        });
+                        
+                        pin.addTo(pinsLayer);
+                        
+                        if (isHighlighted) {
+                            pin.openPopup();
+                            pendingHighlightId = null; 
+                        }
+                    }
+                });
+            }
+        }
+
+        // ACCIÓN RECÍPROCA MEJORADA: Pin Fijo
+        function focusOnLeader(id) {
+            const leader = leadersData.find(l => l.id === id);
+            if (!leader || !leader.coords) return;
+
+            highlightCard(id);
+            pendingHighlightId = id;
+            
+            // Viajar con suavidad
+            map.flyTo(leader.coords, 11, { duration: 1.2 });
+        }
+
+        function highlightCard(id) {
+            document.querySelectorAll('.leader-card').forEach(c => c.classList.remove('active-card'));
+            const selectedCard = document.getElementById(`card-${id}`);
+            if (selectedCard) {
+                selectedCard.classList.add('active-card');
+                selectedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function filterListByState(stateName) {
+            const normalized = stateName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const filtered = leadersData.filter(d => d.estado.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalized));
+            renderCards(filtered, stateName);
+        }
+
+        function renderCards(items, title = "Directorio Nacional") {
+            const container = document.getElementById('results-area');
+            container.innerHTML = `<h2 class="text-xl font-black text-slate-800 border-b-4 border-red-50 pb-2 mb-6 uppercase tracking-tighter">${title}</h2>`;
+            
+            if (items.length === 0) {
+                container.innerHTML += `<p class="text-slate-400 italic">Sin resultados.</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.id = `card-${item.id}`;
+                card.className = "leader-card bg-white rounded-3xl p-5 border border-slate-100 shadow-sm mb-4";
+                card.onclick = () => focusOnLeader(item.id);
+                
+                let links = "";
+                if (item.redes) {
+                    item.redes.forEach(url => {
+                        links += `
+                        <a href="${url}" target="_blank" class="link-icon" onclick="event.stopPropagation()">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                            Facebook / Red Social
+                        </a>`;
+                    });
+                }
+
+                card.innerHTML = `
+                    <div class="mb-3">
+                        <span class="text-[8px] font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded tracking-widest leading-loose">${item.estado} / ${item.sede}</span>
+                        <h3 class="text-lg font-bold text-slate-800 mt-1">${item.lider}</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            </div>
+                            <a href="tel:${item.tel}" class="text-sm font-black text-red-600 hover:underline transition-all" onclick="event.stopPropagation()">${item.tel}</a>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <p class="text-[9px] text-slate-400 font-black uppercase mb-1 italic">Entrenamiento:</p>
+                            <p class="text-[11px] text-slate-700 leading-snug font-medium">${item.ent}</p>
+                        </div>
+                        <div class="flex flex-wrap gap-4 pt-2 border-t border-slate-100">
+                            ${links || '<span class="text-[10px] text-slate-400 italic">Redes no disponibles</span>'}
+                            ${item.correo !== "No disponible" ? `<a href="mailto:${item.correo}" class="text-[11px] font-bold text-slate-500 hover:text-red-600 transition-all uppercase tracking-tighter" onclick="event.stopPropagation()">📧 E-mail</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterList() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const results = leadersData.filter(d => 
+                d.lider.toLowerCase().includes(query) || 
+                d.estado.toLowerCase().includes(query) || 
+                d.sede.toLowerCase().includes(query)
+            );
+            renderCards(results, query ? "Resultados Filtrados" : "Directorio Nacional");
+        }
+
+        function resetMapView() {
+            map.flyTo(MEXICO_CENTER, MEXICO_ZOOM, { duration: 1 });
+            renderCards(leadersData);
+            document.querySelectorAll('.leader-card').forEach(c => c.classList.remove('active-card'));
+        }
+
+        function showVirtual() {
+            renderCards([virtualLeader], "Sede Virtual");
+            map.flyTo(MEXICO_CENTER, MEXICO_ZOOM);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
