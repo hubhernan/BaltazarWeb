@@ -1,11 +1,32 @@
 import { useEffect, useState } from 'react';
 import { Menu, X, ChevronRight, Award, MapPin, Heart, Mail, Phone, Users, Shield, BookOpen, Camera, Calendar } from 'lucide-react';
 import './App.css';
+import { supabase } from './supabaseClient';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
+
+  // Contact Form State
+  const [formData, setFormData] = useState({ nombre_completo: '', correo: '', whatsapp: '', mensaje: '' });
+  const [formStatus, setFormStatus] = useState('idle'); // idle, submitting, success, error
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus('submitting');
+    try {
+      const { error } = await supabase.from('leads').insert([formData]);
+      if (error) throw error;
+      setFormStatus('success');
+      setFormData({ nombre_completo: '', correo: '', whatsapp: '', mensaje: '' });
+      setTimeout(() => setFormStatus('idle'), 5000);
+    } catch (error) {
+      console.error("Error al enviar registro:", error);
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 5000);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -648,26 +669,44 @@ function App() {
                 <a href="tel:+525638512283" className="font-medium hover:text-orange transition-colors">56 3851 2283</a>
               </div>
 
-              <div style={{ marginTop: '2rem' }}>
+              <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
+                <a href="https://wa.me/525638512283?text=Hola%20Baltazar,%20me%20interesa%20conocer%20m%C3%A1s%20de%20VIM%20Coyotes%20Neza" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'inline-flex', gap: '0.5rem', background: '#25D366', borderColor: '#25D366' }}>
+                  <Phone size={20} /> Escríbeme por WhatsApp
+                </a>
                 <a href="https://facebook.com" target="_blank" rel="noreferrer" className="btn btn-outline" style={{ display: 'inline-flex', gap: '0.5rem' }}>
                   <span className="contact-icon">f</span> Facebook Oficial: VIM Coyotes Neza
                 </a>
               </div>
             </div>
 
-            <form className="contact-form glass" style={{ padding: '2rem', borderRadius: '8px' }} onSubmit={(e) => e.preventDefault()}>
+            <form className="contact-form glass" style={{ padding: '2rem', borderRadius: '8px', position: 'relative' }} onSubmit={handleContactSubmit}>
               <div className="form-group">
-                <input type="text" className="form-control" placeholder="Nombre completo" required />
+                <input type="text" className="form-control" placeholder="Nombre completo" value={formData.nombre_completo} onChange={(e) => setFormData({...formData, nombre_completo: e.target.value})} required />
               </div>
               <div className="form-group">
-                <input type="email" className="form-control" placeholder="Correo electrónico" required />
+                <input type="email" className="form-control" placeholder="Correo electrónico" value={formData.correo} onChange={(e) => setFormData({...formData, correo: e.target.value})} required />
               </div>
               <div className="form-group">
-                <textarea className="form-control" placeholder="¿En qué te podemos ayudar? (Solicitud de taller, informes de ingreso, etc.)" required></textarea>
+                <input type="tel" className="form-control" placeholder="Tu número de WhatsApp (10 dígitos)" value={formData.whatsapp} onChange={(e) => setFormData({...formData, whatsapp: e.target.value})} required pattern="[0-9]{10}" title="Un número válido a 10 dígitos" />
               </div>
-              <button type="submit" className="btn btn-primary w-full">
-                Enviar Mensaje
+              <div className="form-group">
+                <textarea className="form-control" placeholder="¿En qué te podemos ayudar? (Solicitud de taller, informes de ingreso, etc.)" value={formData.mensaje} onChange={(e) => setFormData({...formData, mensaje: e.target.value})} required></textarea>
+              </div>
+              
+              <button type="submit" className="btn btn-primary w-full" disabled={formStatus === 'submitting'}>
+                {formStatus === 'submitting' ? 'Enviando Registro...' : 'Registrarse y Enviar Mensaje'}
               </button>
+
+              {formStatus === 'success' && (
+                <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0,255,0,0.1)', color: '#4ade80', borderRadius: '8px', textAlign: 'center', fontWeight: 'bold' }}>
+                  ¡Registro exitoso! Nos pondremos en contacto contigo pronto.
+                </div>
+              )}
+              {formStatus === 'error' && (
+                <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,0,0,0.1)', color: '#f87171', borderRadius: '8px', textAlign: 'center', fontWeight: 'bold' }}>
+                  Hubo un error al enviar el registro. Por favor intenta más tarde o contáctanos por WhatsApp.
+                </div>
+              )}
             </form>
           </div>
         </div>
