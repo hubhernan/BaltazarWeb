@@ -5,6 +5,7 @@ import './App.css';
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedMedia, setSelectedMedia] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,9 +35,9 @@ function App() {
       {/* Navigation */}
       <header className={isScrolled ? 'scrolled' : ''}>
         <div className="container flex justify-between items-center">
-          <a href="#" className="flex items-center gap-sm">
-            <span className="text-orange" style={{ fontWeight: 800, fontSize: '1.5rem', letterSpacing: '-0.05em' }}>VIM</span>
-            <span style={{ fontWeight: 300, fontSize: '1.2rem' }}>Coyotes Neza</span>
+          <a href="#" className="flex items-center gap-sm" style={{ flexWrap: 'wrap' }}>
+            <span className="text-orange" style={{ fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em', lineHeight: 1.1 }}>Vida Independiente México</span>
+            <span style={{ fontWeight: 300, fontSize: '1.2rem', lineHeight: 1.1 }}>Coyotes Neza</span>
           </a>
           
           <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
@@ -108,6 +109,227 @@ function App() {
             <img src={`${import.meta.env.BASE_URL}portrait.png`} alt="Baltazar Hernandez Suastegui" />
           </div>
         </div>
+        
+        {/* Informe de Actividades y Trayectoria */}
+        <div className="reveal" style={{ marginTop: '5rem', padding: '3rem', background: 'rgba(23, 23, 23, 0.6)', backdropFilter: 'blur(10px)', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+          <h3 className="text-orange" style={{ fontSize: '1.8rem', marginBottom: '2rem', textAlign: 'center', fontWeight: 800 }}>
+            Informe de Actividades y Trayectoria
+          </h3>
+          
+          {/* 1. Identificación */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h4 className="text-white" style={{ fontSize: '1.3rem', marginBottom: '1rem', borderBottom: '2px solid var(--color-primary-orange)', display: 'inline-block', paddingBottom: '0.2rem' }}>1. Identificación del Perfil y Liderazgo</h4>
+            <p className="text-gray" style={{ marginBottom: '1rem' }}>
+              <strong>Baltazar Hernández Suástegui</strong> se consolida como una figura central en el ecosistema de la sociedad civil organizada en el Estado de México, desempeñándose como coordinador de la sede Vida Independiente México (VIM) Coyotes Neza. Su gestión técnica y política se ha distinguido por transformar la asistencia social en una estrategia de empoderamiento ciudadano para las personas con discapacidad.
+            </p>
+            <p className="text-gray">
+              Bajo su liderazgo, la sede Coyotes Neza ha operado con una misión clara: promover la autonomía plena a través de la formación en el manejo de silla de ruedas de modelo activo, el impulso al deporte adaptado de alto nivel y la gestión estratégica de apoyos sociales. Su enfoque no solo busca la movilidad física, sino la reintegración total de la persona a la vida económica, política y social.
+            </p>
+          </div>
+
+          {/* 2. Trayectoria */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h4 className="text-white" style={{ fontSize: '1.3rem', marginBottom: '1rem', borderBottom: '2px solid var(--color-primary-orange)', display: 'inline-block', paddingBottom: '0.2rem' }}>2. Trayectoria Deportiva y Reconocimientos (2022-2025)</h4>
+            <p className="text-gray" style={{ marginBottom: '1.5rem' }}>
+              La trayectoria de Baltazar Hernández Suástegui refleja una versatilidad atlética excepcional, demostrando que el deporte es la piedra angular de la rehabilitación y la visibilidad comunitaria. Su desempeño se divide en dos vertientes competitivas:
+            </p>
+            
+            <h5 className="text-orange" style={{ fontSize: '1.1rem', marginBottom: '0.5rem', fontWeight: 600 }}>Baloncesto sobre Silla de Ruedas</h5>
+            <div style={{ overflowX: 'auto', marginBottom: '2rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', color: 'var(--color-light-gray)', fontSize: '0.95rem' }}>
+                <thead>
+                  <tr style={{ background: 'rgba(255,106,0,0.1)', textAlign: 'left' }}>
+                    <th style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,106,0,0.3)' }}>Año</th>
+                    <th style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,106,0,0.3)' }}>Evento / Competencia</th>
+                    <th style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,106,0,0.3)' }}>Resultado / Lugar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2022</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Torneo de Basquetbol sobre Silla de Ruedas (31/07)</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Segundo Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2023</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Torneo Hexagonal Neza</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Tercer Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2023</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Torneo Reptilianos Neza (INCUFIDENE)</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-primary-orange)' }}>Primer Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Torneo Villa Vive (31/07)</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-primary-orange)' }}>Primer Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Cuadrangular Deportivo Las Américas, Ecatepec</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Segundo Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Primera Copa INR LGII Baloncesto</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Participación Destacada</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2025</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Encuentro Reptilianos Neza vs. INCUFIDENE</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Liderazgo de Equipo</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 className="text-orange" style={{ fontSize: '1.1rem', marginBottom: '0.5rem', fontWeight: 600 }}>Atletismo y Carreras de Velocidad y Fondo</h5>
+            <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', color: 'var(--color-light-gray)', fontSize: '0.95rem' }}>
+                <thead>
+                  <tr style={{ background: 'rgba(255,106,0,0.1)', textAlign: 'left' }}>
+                    <th style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,106,0,0.3)' }}>Año</th>
+                    <th style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,106,0,0.3)' }}>Evento / Competencia</th>
+                    <th style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,106,0,0.3)' }}>Resultado / Lugar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2022</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Abierto Nacional de Deporte Adaptado</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Subcampeón Nacional</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>14ª Carrera Futejje - Chapultepec</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-primary-orange)' }}>Primer Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>13ª Carrera Cinemex - VIM</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-primary-orange)' }}>Primer Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Carrera "Velocidad Pura" (5 km)</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-primary-orange)' }}>Primer Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>"Querétaro no corre vuela" (5 km)</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-primary-orange)' }}>Primer Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>"Querétaro no corre vuela" (21 km - Medio Maratón)</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Finalista / Cumplimiento</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Carrera Inclusión y No Discriminación - Teletón Neza</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Segundo Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2024</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Carrera Ruba Race - Jalisco</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Segundo Lugar</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '0.75rem 1rem' }}>2025</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>Carrera "Vivir es Increíble" - Autódromo Hnos. Rodríguez</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-white)' }}>Segundo Lugar</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div className="quote-box" style={{ marginTop: '2rem', padding: '1.5rem', borderLeft: '4px solid var(--color-primary-orange)', background: 'rgba(255,255,255,0.02)', borderRadius: '0 8px 8px 0' }}>
+              <p className="text-gray" style={{ fontStyle: 'italic', margin: 0 }}>
+                <strong className="text-white" style={{ fontStyle: 'normal' }}>Hito de Formación Formativa:</strong> El 28 de septiembre de 2024, participó de manera fundamental en la primera clínica de rugby y basquetbol en silla de ruedas dirigida a niños con discapacidad en la República Mexicana, celebrada en la Sede Querétaro, sentando las bases para el relevo generacional en el deporte adaptado.
+              </p>
+            </div>
+          </div>
+
+          {/* 3. Cronología */}
+          <div style={{ marginBottom: '2.5rem' }}>
+             <h4 className="text-white" style={{ fontSize: '1.3rem', marginBottom: '1rem', borderBottom: '2px solid var(--color-primary-orange)', display: 'inline-block', paddingBottom: '0.2rem' }}>3. Cronología de Labor Social y Gestión Comunitaria (2025)</h4>
+             <p className="text-gray" style={{ marginBottom: '1.5rem' }}>Durante el semestre reportado, la coordinación de Coyotes Neza ha impulsado iniciativas de alto impacto, garantizando una presencia institucional ininterrumpida.</p>
+             <ul className="text-gray flex-col gap-sm" style={{ paddingLeft: '1.5rem', listStyleType: 'none' }}>
+                <li style={{ position: 'relative', paddingLeft: '1.5rem' }}>
+                  <span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span>
+                  <strong className="text-white">Marzo:</strong> La gestión dinamizó 7 eventos clave, destacando la representación en los Juegos Paraestatales 2025 en Cuautitlán Izcalli. Se priorizó la rehabilitación infantil mediante la donación de sillas de ruedas y la apertura de cursos intensivos de manejo, incluyendo el caso de éxito de la becaria "Lupita".
+                </li>
+                <li style={{ position: 'relative', paddingLeft: '1.5rem' }}>
+                  <span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span>
+                  <strong className="text-white">Abril:</strong> Se consolidó la incidencia política mediante un diálogo estratégico con la Ministra Mónica Güicho para el análisis de propuestas en el sector discapacidad. Simultáneamente, se fortaleció el músculo financiero de la organización a través de la campaña de redondeo en tiendas OXXO y la celebración del 6to Aniversario de VIM Tenancingo.
+                </li>
+                <li style={{ position: 'relative', paddingLeft: '1.5rem' }}>
+                  <span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span>
+                  <strong className="text-white">Mayo:</strong> La coordinación impulsó 5 iniciativas, entre las que destaca la 11° Carrera "Corre por ti, Camina conmigo". Se reforzó la integración comunitaria con un evento del Día del Niño y la presencia en el 10° Aniversario de VIM Tlaxcala.
+                </li>
+                <li style={{ position: 'relative', paddingLeft: '1.5rem' }}>
+                  <span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span>
+                  <strong className="text-white">Junio:</strong> Se establecieron vínculos de alto nivel con el Lic. Pedro Ortega Fonseca (Director General para el Bienestar de Personas con Discapacidad) para la gestión de equipamiento. Asimismo, se expandió la frontera educativa impartiendo un taller de manejo a estudiantes de Fisioterapia de la Universidad ICEL campus Tlalpan.
+                </li>
+                <li style={{ position: 'relative', paddingLeft: '1.5rem' }}>
+                  <span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span>
+                  <strong className="text-white">Julio:</strong> Se ejecutaron programas de Responsabilidad Social Corporativa con la empresa Albany International México. Además, se coordinaron prácticas de movilidad urbana avanzada en el sistema de transporte Metro de la CDMX, permitiendo que los usuarios enfrenten barreras arquitectónicas en entornos reales.
+                </li>
+                <li style={{ position: 'relative', paddingLeft: '1.5rem' }}>
+                  <span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span>
+                  <strong className="text-white">Agosto:</strong> Periodo de máxima intensidad con 11 eventos registrados. Se consolidó la presencia social en la Marcha Peregrinos de Esperanza y la colaboración con la Biblioteca Móvil de Grupo Andrade. Destaca la integración en la estructura civil-religiosa mediante el servicio pastoral y de cargo colector en la Iglesia San Pedro y San Pablo. El mes culminó con la Rodada del 25 Aniversario de Vida Independiente México.
+                </li>
+             </ul>
+          </div>
+
+          {/* 4. Impacto Social */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h4 className="text-white" style={{ fontSize: '1.3rem', marginBottom: '1rem', borderBottom: '2px solid var(--color-primary-orange)', display: 'inline-block', paddingBottom: '0.2rem' }}>4. Impacto Social e Incidencia en la Autonomía</h4>
+            <p className="text-gray" style={{ marginBottom: '1.5rem' }}>La gestión de Baltazar Hernández Suástegui trasciende la asistencia técnica para generar un valor social medible bajo los siguientes pilares:</p>
+            <div className="grid grid-cols-2 gap-md" style={{ gap: '1.5rem' }}>
+              <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.02)' }}>
+                <h5 className="text-orange" style={{ marginBottom: '0.5rem', fontSize: '1.1rem' }}>Profesionalización de la Salud</h5>
+                <p className="text-gray" style={{ fontSize: '0.95rem' }}>Mediante talleres a estudiantes de la Universidad ICEL, se garantiza que los futuros fisioterapeutas comprendan la movilidad desde la perspectiva de la autonomía y no solo de la patología.</p>
+              </div>
+              <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.02)' }}>
+                <h5 className="text-orange" style={{ marginBottom: '0.5rem', fontSize: '1.1rem' }}>Sensibilización en el Sector Privado</h5>
+                <p className="text-gray" style={{ fontSize: '0.95rem' }}>La ejecución de clínicas en Albany International ha permitido que el entorno corporativo reconozca las capacidades de integración de las personas con discapacidad.</p>
+              </div>
+              <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.02)' }}>
+                <h5 className="text-orange" style={{ marginBottom: '0.5rem', fontSize: '1.1rem' }}>Inclusión Familiar Estratégica</h5>
+                <p className="text-gray" style={{ fontSize: '0.95rem' }}>Se ha implementado un modelo donde se involucra a familiares en el entrenamiento para asegurar que el usuario posea un dominio absoluto de la silla de ruedas, instruyendo a la familia para que su rol sea de acompañamiento proactivo.</p>
+              </div>
+              <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.02)' }}>
+                <h5 className="text-orange" style={{ marginBottom: '0.5rem', fontSize: '1.1rem' }}>Gestión de Bienes de Movilidad</h5>
+                <p className="text-gray" style={{ fontSize: '0.95rem' }}>La entrega de sillas de ruedas activas ha permitido que niños y adultos de Nezahualcóyotl transiten de la dependencia al protagonismo social.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 5. Alianzas */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h4 className="text-white" style={{ fontSize: '1.3rem', marginBottom: '1rem', borderBottom: '2px solid var(--color-primary-orange)', display: 'inline-block', paddingBottom: '0.2rem' }}>5. Alianzas Estratégicas y Colaboración Institucional</h4>
+            <p className="text-gray" style={{ marginBottom: '1.5rem' }}>Bajo esta coordinación, la sede Coyotes Neza ha articulado una red robusta de colaboración con diversas entidades:</p>
+            <ul className="text-gray" style={{ paddingLeft: '1.5rem' }}>
+              <li style={{ marginBottom: '0.5rem', position: 'relative', paddingLeft: '1.5rem' }}><span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span><strong className="text-white">Sector Académico:</strong> Universidad ICEL (Campus Tlalpan).</li>
+              <li style={{ marginBottom: '0.5rem', position: 'relative', paddingLeft: '1.5rem' }}><span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span><strong className="text-white">Sector Gubernamental y Salud:</strong> IMSS Bienestar, Cecosama (Centro Comunitario de Salud Mental y Adicciones), Poder Judicial (Oficina de la Ministra Mónica Güicho) y Sistema Metro CDMX.</li>
+              <li style={{ marginBottom: '0.5rem', position: 'relative', paddingLeft: '1.5rem' }}><span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span><strong className="text-white">Sector Privado:</strong> Albany International México, Tiendas OXXO, Ford Blue Season y Grupo Andrade (Proyecto Biblioteca Móvil).</li>
+              <li style={{ marginBottom: '0.5rem', position: 'relative', paddingLeft: '1.5rem' }}><span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary-orange)' }}></span><strong className="text-white">Sociedad Civil:</strong> Fundación Mexicana de Integración Social I.A.P., Teletón Nezahualcóyotl y APAC.</li>
+            </ul>
+          </div>
+
+          {/* 6. Conclusión */}
+          <div>
+            <h4 className="text-white" style={{ fontSize: '1.3rem', marginBottom: '1rem', borderBottom: '2px solid var(--color-primary-orange)', display: 'inline-block', paddingBottom: '0.2rem' }}>6. Conclusión del Informe</h4>
+            <p className="text-gray" style={{ marginBottom: '1rem' }}>
+              El desempeño de Baltazar Hernández Suástegui durante el periodo 2025 representa un estándar de excelencia en la coordinación de sedes de Vida Independiente México. Con una operatividad del 100% y cumplimiento total de las actividades solicitadas, su labor ha sido fundamental para posicionar a Coyotes Neza como un motor de cambio en la zona oriente del Valle de México.
+            </p>
+            <p className="text-gray">
+              Su compromiso inquebrantable reafirma que la filosofía VIM no es solo una técnica de manejo, sino una postura política y social que exige la libertad total del individuo. Baltazar Hernández Suástegui es, hoy por hoy, un líder indispensable en la construcción de una sociedad sin barreras.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Logros Section */}
@@ -146,6 +368,21 @@ function App() {
                 <span className="timeline-date">Años 90s</span>
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Campeón Nacional de Natación</h3>
                 <p className="text-gray">Medallista en los años 1993 y 1994, estableciendo las bases del deporte adaptado en mi vida.</p>
+              </div>
+            </div>
+
+            <div className="timeline-item reveal">
+              <div className="timeline-dot"></div>
+              <div className="timeline-content gap-sm flex-col">
+                <span className="timeline-date">1996</span>
+                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Recorrido</h3>
+                <p className="text-gray">45 Días de Justicia Social para las Personas con Discapacidad.</p>
+                <div style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '8px' }}>
+                  <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--color-primary-orange)', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>▶ Escuchar relato histórico</span>
+                  <audio controls src={`${import.meta.env.BASE_URL}audio_recorrido.m4a`} style={{ width: '100%', height: '36px' }}>
+                    Tu navegador no soporta el elemento de audio.
+                  </audio>
+                </div>
               </div>
             </div>
             
@@ -310,26 +547,26 @@ function App() {
             </div>
           </div>
 
-          <div className="gallery-grid reveal">
-            <div className="gallery-item">
+          <div className="gallery-carousel reveal">
+            <div className="gallery-item" onClick={() => setSelectedMedia({ type: 'image', src: `${import.meta.env.BASE_URL}galeria/1.jpg` })}>
               <img src={`${import.meta.env.BASE_URL}galeria/1.jpg`} alt="Momentos destacables 1" />
               <div className="gallery-overlay">
                 <Camera size={40} className="gallery-icon" />
               </div>
             </div>
-            <div className="gallery-item">
+            <div className="gallery-item" onClick={() => setSelectedMedia({ type: 'image', src: `${import.meta.env.BASE_URL}galeria/2.jpg` })}>
               <img src={`${import.meta.env.BASE_URL}galeria/2.jpg`} alt="Momentos destacables 2" />
                <div className="gallery-overlay">
                 <Camera size={40} className="gallery-icon" />
               </div>
             </div>
-            <div className="gallery-item">
+            <div className="gallery-item" onClick={() => setSelectedMedia({ type: 'image', src: `${import.meta.env.BASE_URL}galeria/3.jpg` })}>
               <img src={`${import.meta.env.BASE_URL}galeria/3.jpg`} alt="Momentos destacables 3" />
                <div className="gallery-overlay">
                 <Camera size={40} className="gallery-icon" />
               </div>
             </div>
-            <div className="gallery-item">
+            <div className="gallery-item" onClick={() => setSelectedMedia({ type: 'image', src: `${import.meta.env.BASE_URL}galeria/4.jpg` })}>
               <img src={`${import.meta.env.BASE_URL}galeria/4.jpg`} alt="Momentos destacables 4" />
                <div className="gallery-overlay">
                 <Camera size={40} className="gallery-icon" />
@@ -343,8 +580,11 @@ function App() {
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 allowFullScreen
-                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
+                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none'}}>
               </iframe>
+              <div className="gallery-overlay" style={{ cursor: 'pointer', zIndex: 3 }} onClick={() => setSelectedMedia({ type: 'video', src: 'https://www.youtube.com/embed/3DWn4zd8NR0?rel=0&autoplay=1' })}>
+                <span className="text-white font-bold tracking-widest uppercase">▶ Ampliar Video</span>
+              </div>
             </div>
             
             <div className="gallery-item" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
@@ -354,8 +594,11 @@ function App() {
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 allowFullScreen
-                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
+                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none'}}>
               </iframe>
+              <div className="gallery-overlay" style={{ cursor: 'pointer', zIndex: 3 }} onClick={() => setSelectedMedia({ type: 'video', src: 'https://www.youtube.com/embed/hIz0PDNSmJQ?rel=0&autoplay=1' })}>
+                <span className="text-white font-bold tracking-widest uppercase">▶ Ampliar Video</span>
+              </div>
             </div>
           </div>
         </div>
@@ -435,8 +678,8 @@ function App() {
         <div className="container">
           <div className="footer-grid">
             <div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }} className="text-white">
-                <span className="text-orange">VIM</span> Coyotes Neza
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', lineHeight: 1.2 }} className="text-white">
+                <span className="text-orange">Vida Independiente México</span> Coyotes Neza
               </h3>
               <p className="text-gray" style={{ fontSize: '0.9rem' }}>
                 Sede oficial en Nezahualcóyotl del movimiento Vida Independiente México. De la depresión a la libertad, sobre ruedas.
@@ -466,6 +709,26 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Lightbox / Modal */}
+      {selectedMedia && (
+        <div className="lightbox" onClick={() => setSelectedMedia(null)}>
+          <button className="lightbox-close" onClick={() => setSelectedMedia(null)}>
+            <X size={32} />
+          </button>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            {selectedMedia.type === 'image' ? (
+              <img src={selectedMedia.src} alt="Vista ampliada" />
+            ) : (
+              <iframe 
+                src={selectedMedia.src}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+              ></iframe>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
